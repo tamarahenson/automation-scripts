@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+echo "Installing Docker"
+
+ curl -fsSL get.docker.com | CHANNEL=stable sh
+ sleep 15
+ sudo apt install docker-ce
+ sleep 15
+ sudo apt-get install docker-ce docker-ce-cli containerd.io
+ sleep 15
+
+echo "Enable Docker Service"
+
+ systemctl status docker
+ sleep 5
+ sudo systemctl enable docker.service
+ sleep 5
+ sudo systemctl enable containerd.service 
+ sleep 5
+
+echo "Setup Registry Auth"
+
+mkdir registry
+mkdir auth
+
+sudo docker run \
+  --entrypoint htpasswd \
+  httpd:2 -Bbn admin admin > auth/htpasswd
+
+echo "Enable Registry with Auth"
+
+sudo docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v "$(pwd)"/auth:/auth \
+  -e "REGISTRY_AUTH=htpasswd" \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -v "$(pwd)"/certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  registry:2
