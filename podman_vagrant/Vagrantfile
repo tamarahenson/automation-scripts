@@ -1,0 +1,23 @@
+
+# vi: set ft=ruby
+
+# This file uses experimental vagrant feature documented here: https://www.vagrantup.com/docs/disks/usage
+# (This is to resolve issues with vagrant-disksize plugin not working)
+# You need to run it with VAGRANT_EXPERIMENTAL="disks" set in your environment, such as
+# VAGRANT_EXPERIMENTAL="disks" vagrant up
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: "sudo yum update && sudo yum upgrade"
+
+  config.vm.define "centos8" do |centos|
+  config.vm.network :private_network, ip: "192.168.2.22"
+    centos8.vm.box = "centos/stream8"
+    centos8.vm.hostname = "podman"
+    centos8.vm.provider "virtualbox" do |l|
+      l.cpus = 4
+      l.memory = "8192"
+    end   
+    centos8.vm.disk :disk, size: "100GB", primary: true
+
+  end
+end

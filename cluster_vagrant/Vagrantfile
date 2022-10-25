@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.define "primary" do |primary|
+    primary.vm.box = "debian/stretch64"
+    primary.vm.hostname = "primary"
+    primary.vm.network :private_network, ip: "10.100.1.10"
+    primary.vm.provider "virtualbox" do |vb|
+      vb.memory = "8192"
+      vb.cpus = 4
+    end
+  end
+
+  (1..2).each do |i|
+    config.vm.define "worker#{i}" do |worker|
+      worker.vm.box = "debian/stretch64"
+      worker.vm.hostname = "worker#{i}"
+      worker.vm.network :private_network, ip: "10.100.1.20#{i}"
+      worker.vm.provider "virtualbox" do |vb|
+        vb.memory = "8192"
+        vb.cpus = 4
+      end
+    end
+  end
+end

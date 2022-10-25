@@ -1,0 +1,28 @@
+# vi: set ft=ruby
+
+# This file uses experimental vagrant feature documented here: https://www.vagrantup.com/docs/disks/usage
+# (This is to resolve issues with vagrant-disksize plugin not working)
+# You need to run it with VAGRANT_EXPERIMENTAL="disks" set in your environment, such as
+# VAGRANT_EXPERIMENTAL="disks" vagrant up
+
+Vagrant.configure("2") do |config|
+  #config.vm.provision "shell", inline: "sudo apt-get update && sudo apt-get -y upgrade"
+
+  config.vm.define "fedora" do |fedora|
+  config.vm.network :private_network, ip: "192.168.4.10"
+  config.vm.box = "fedora/35-cloud-base"
+  config.vm.box_version = "35.20211026.0"
+    fedora.vm.hostname = "testing"
+    fedora.vm.provider "virtualbox" do |l|
+      l.cpus = 4
+      l.memory = "8192"
+    end
+    #ubuntu18.vm.network "forwarded_port", guest: 8800, host: 8800
+    #ubuntu18.vm.network "forwarded_port", guest: 8080, host: 8080
+    #ubuntu18.vm.network "forwarded_port", guest: 9090, host: 9090
+    #ubuntu18.vm.network "forwarded_port", guest: 9443, host: 9443
+    #ubuntu18.vm.network "forwarded_port", guest: 9000, host: 9000    
+    fedora.vm.disk :disk, size: "100GB", primary: true
+
+  end
+end
