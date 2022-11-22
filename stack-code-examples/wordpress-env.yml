@@ -11,7 +11,7 @@ services:
     volumes:
       - wordpress-data:/var/www/html
     env_file:
-      - stack.env
+      - ../stack.env
 
   mysql:
     # we sue mariadb here for arm support
@@ -20,7 +20,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     env_file:
-      - stack.env
+      - ../stack.env
 
 volumes:
   mysql-data:
