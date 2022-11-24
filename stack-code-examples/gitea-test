@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  gitea-net:
+    external: false
+
+volumes:
+  gitea-vol:
+    driver: local
+
+services:
+  server:
+    image: gitea/gitea:1.17
+    container_name: gitea
+    restart: always
+    networks:
+      - gitea-net
+    volumes:
+      - gitea-vol:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8070:3000"
+      - "8022:22"
+    environment:
+      - GITEA__webhook__ALLOWED_HOST_LIST=external,loopback
