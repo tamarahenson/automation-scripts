@@ -64,6 +64,7 @@ member: cn=portainer,ou=users,dc=portainer,dc=io
 EOF
 
 echo “Updating LDAP”
+sudo apt install ldap-utils
 ldapadd -x -D "cn=admin,dc=portainer,dc=io" -w admin -f ldap_seed.ldif
 
 
