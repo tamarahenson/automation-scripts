@@ -1,4 +1,5 @@
 echo ==== Installing Requirements ==============================================
+sudo apt-get update && sudo apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl openssh-server ca-certificates postfix
 
 echo ==== Installing GitLab CE =================================================
