@@ -7,7 +7,6 @@
 # VAGRANT_EXPERIMENTAL="disks" vagrant up
 
 Vagrant.configure("2") do |config|
-  config.vm.provision :docker
   config.vm.provision "shell", path: "scripts/setupGitlab.sh"
 
   config.vm.define "gitlab" do |gitlab|
